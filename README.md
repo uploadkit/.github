@@ -59,7 +59,7 @@ Validate once. Upload anywhere. Same policy across Django, FastAPI, Flask, aioht
 ### uploadkit-office
 
 [![CI](https://github.com/uploadkit/uploadkit-office/actions/workflows/ci.yml/badge.svg)](https://github.com/uploadkit/uploadkit-office/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-79%25-yellow)](https://github.com/uploadkit/uploadkit-office/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen)](https://github.com/uploadkit/uploadkit-office/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue)](https://github.com/uploadkit/uploadkit-office/blob/main/pyproject.toml)
 
 ### uploadkit-cli

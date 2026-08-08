@@ -116,11 +116,34 @@ Sync:  Uploader.upload → validators → StorageProvider.put → UploadResult �
 Async: AsyncUploader.upload → async validators → AsyncStorageProvider writer → UploadResult → after_upload
 ```
 
-### Minimal Core usage
+---
+
+## Quick Start
+
+Requires **Python 3.10+**.
 
 ```bash
 pip install uploadkit uploadkit-security
 ```
+
+```bash
+uv add uploadkit uploadkit-security
+```
+
+```bash
+poetry add uploadkit uploadkit-security
+```
+
+For the storage samples (not package dependencies):
+
+```bash
+pip install boto3          # sync AWS S3 / MinIO
+pip install aioboto3       # async AWS S3 / MinIO
+```
+
+You supply `storage` / `async_storage` by implementing `StorageProvider` or `AsyncStorageProvider` (see the [Core README](https://github.com/uploadkit/uploadkit#storage-examples-aws-s3-and-minio) for AWS S3 / MinIO samples).
+
+### Sync
 
 ```python
 from uploadkit import Uploader, UploadPolicy
@@ -136,12 +159,30 @@ result = Uploader(policy, storage).upload(
     file,  # UploadableFile
     bucket="uploads",
     object_name="2026/file.png",
-    after_upload=notify,  # optional callback or Celery-like .delay
 )
 # result.bucket, result.object_name, result.sha256, result.etag, …
 ```
 
-You supply `storage` by implementing `StorageProvider.put(...)` (see the [Core README](https://github.com/uploadkit/uploadkit#storage-examples-aws-s3-and-minio) for AWS S3 / MinIO samples).
+### Async streaming
+
+```python
+from uploadkit import AsyncUploader, UploadPolicy
+from uploadkit_security import default_async_validators
+
+policy = UploadPolicy(
+    max_size=5 * 1024 * 1024,
+    allowed_extensions=frozenset({"png"}),
+    allowed_mime_types=frozenset({"image/png"}),
+    async_validators=default_async_validators(),
+)
+result = await AsyncUploader(policy, async_storage).upload(
+    source,  # AsyncByteSource
+    bucket="uploads",
+    object_name="2026/file.png",
+)
+```
+
+Optional `after_upload` on either path: a sync/async callback, or a Celery-like object with `.delay(**result.as_task_kwargs())`.
 
 ---
 
